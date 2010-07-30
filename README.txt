@@ -20,17 +20,20 @@ SCIPTS:
 
 I've included a number of useful scripts related to building the app in the 'script' directory.
 
-You should run the 'script/clean.sh' script after you build the app bundle and before you rebuild it, to clean out the 'build' and 'dist'
-directories.
-
 If you modify any of the .ui files using Qt designer, you'll need to run 'script/make_forms.sh' to reconstruct the corresponding .py
 files and see the results of your modifications when the application runs.
+
+
+If you intend to commit any code to the public github repository for this project, you should run 'script/delete_stored_settings.sh'
+before doing so.  This script clears the settings.data file, which may otherwise include the foursquare username (in pain text) and
+password (encoded in base64) that you have been using to test the application.
+
+(MAC ONLY:)
+
+You should run the 'script/clean.sh' script after you build the app bundle and before you rebuild it, to clean out the 'build' and 'dist'
+directories.
 
 For reasons that are beyond me, py2app includes a number of massive debug files when it builds app bundles for programs that leverage
 PyQt, and you will notice that once you have run 'python setup.py py2app', the app bundle that is generated and placed in the 'dist'
 directory is over 200mb in size.  'script/remove_debug_files_from_app_bundle.sh' will remove the superfluous debug files and shrink
 the app bundle to ~50mb.
-
-If you intend to commit any code to the public github repository for this project, you should run 'script/delete_stored_settings.sh'
-before doing so.  This script clears the settings.data file, which may otherwise include the foursquare username (in pain text) and
-password (encoded in base64) that you have been using to test the application.
