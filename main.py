@@ -18,7 +18,7 @@ class SettingsManager(object):
 		self.username = None
 		self.password = None
 
-class FoursquareManager:
+class FoursquareManager(object):
 	def __init__(self):
 		self.username = None
 		self.password = None
@@ -181,9 +181,9 @@ class CheckinView(QFrame):
 		self.vid_text_field = self.form.vid_field
 		self.checkin_button = self.form.checkin_button
 	
-		QObject.connect(self.recent_checkins_view, SIGNAL("currentRowChanged(int)"), self.handle_cell_click)
+		QObject.connect(self.recent_checkins_view, SIGNAL("currentRowChanged(int)"), self.handle_row_click)
 		
-	def handle_cell_click(self):
+	def handle_row_click(self):
 		current_row = self.recent_checkins_view.currentRow()
 		if self.recent_checkins is not None:
 			self.vid_text_field.setText(str(self.recent_checkins[current_row]['venue']['id']))
