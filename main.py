@@ -9,14 +9,12 @@ import urllib2
 import base64
 import sys
 
-
-#global_style_sheet = open("style.css").read()
 DATA_FILE_NAME = "settings.data"
 
 class SettingsManager(object):
 	def __init__(self):
 		self.remember_username = False
-		self.remember_password = True
+		self.remember_password = False
 		self.username = None
 		self.password = None
 
@@ -42,6 +40,9 @@ class FoursquareManager:
 		#if we get to here, then authentication has not failed
 		return True
 			
+#Presents username and password fields, as well as checkboxes giving the user the option of having username/password stored locally
+#for subsequent recall.  Handles the serialization of username/password, as well as checkbox state,
+#by working with a pickled SettingsManager object.
 class LoginView(QFrame): 
 	def __init__(self, parent=None, foursquare_manager=None):
 		QFrame.__init__(self, parent)
@@ -61,7 +62,7 @@ class LoginView(QFrame):
 			self.settings_manager = pickle.load(data_file)
 			data_file.close()
 		except EOFError:
-			print 'no pickle to load'
+			print 'no stored settings.'
 			#self.settings_manager = SettingsManager()
 		
 		#login fields
@@ -117,7 +118,8 @@ class LoginView(QFrame):
 		data_file = open(DATA_FILE_NAME, 'w')
 		pickle.dump(self.settings_manager, data_file)
 		data_file.close()
-		
+
+#Screen presented to the user if there is a login error.		
 class LoginErrorView(QWidget):
 	def __init__(self, parent=None):
 		QWidget.__init__(self)
@@ -129,7 +131,9 @@ class LoginErrorView(QWidget):
 		
 		self.layout.addWidget(self.error_label, 0,0,1,3)
 		self.layout.addWidget(self.back_button, 1,2,1,1)
-		
+	
+#Pop-up that is presented when a user has been successfully checked into a venue.
+#shows venue's icon, name, address, and the time of the checkin.	
 class CheckinSucceededView(QWidget):
 	def __init__(self, parent=None):
 		QWidget.__init__(self, parent)
@@ -159,7 +163,9 @@ class CheckinSucceededView(QWidget):
 		icon_pixmap.loadFromData(icon_data)
 		self.image_label.setPixmap(icon_pixmap)
 		self.show()
-		
+
+#View showing recent checkins and presenting user with a VID field and button 
+#allowing him/her to be checked into an arbitrary venue.		
 class CheckinView(QFrame):
 	def __init__(self, parent = None, foursquare_manager=None):
 		QFrame.__init__(self, parent)
@@ -192,7 +198,8 @@ class CheckinView(QFrame):
 			details = item['venue']['name']+" ("+str(item['venue']['id'])+"), "+date_in_us_fmt+"GMT"
 			self.recent_checkins_view.addItem(details)
 			venue_counter += 1
-			
+	
+#View presented in the case that an error occurs when application attempts to check user into venue.		
 class CheckinErrorView(QWidget):
 	def __init__(self, parent = None):
 		QWidget.__init__(self, parent)
@@ -205,7 +212,8 @@ class CheckinErrorView(QWidget):
 		self.layout.addWidget(self.okay_button, 2, 3, 1, 1)
 
 		QObject.connect(self.okay_button, SIGNAL("clicked()"), self.destroy)
-		
+
+#The main view.  Manages LoginView, CheckinView, CheckinSuccessView and associated error objects.		
 class MainWindow(QWidget):
 	def __init__(self, parent=None):
 		QWidget.__init__(self, parent)
@@ -258,9 +266,9 @@ class MainWindow(QWidget):
 		if checkin_success is True:
 			self.checkin_success_view.checkin_succeeded(self.foursquare_manager.foursquare_obj)
 			self.checkin_view.update_checkin_list()
-		
+			
+#App initialization		
 app = QApplication(sys.argv)
-#app.setStyleSheet(global_style_sheet)
 main_window = MainWindow() 
 main_window.show()
 sys.exit(app.exec_())
