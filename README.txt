@@ -14,7 +14,7 @@ To create a standalone app bundle:
 
 This will drop the app bundle in the 'dist' directory.
 
-SCIPTS:
+SCRIPTS:
 
 I've included a number of useful scripts related to building the app in the 'script' directory.
 
