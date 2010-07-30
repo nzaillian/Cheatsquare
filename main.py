@@ -1,3 +1,8 @@
+'''
+Author: Nicholas Zaillian (http://www.columbia.edu/~naz2106)
+License (see LICENSE.txt file in this directory)
+'''
+
 import foursquare
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
