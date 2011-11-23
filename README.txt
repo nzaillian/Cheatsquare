@@ -1,3 +1,17 @@
+==================================================================================
+Update (11/22/2011):
+
+This project is no longer maintained.
+
+Over the past several months Foursquare has phased out the v1 API, 
+which this application leveraged for all of its functionality.
+
+Foursquare's v2 API requires, for its use, the registration of an OAuth2 Consumer,
+which makes porting this application not practically feasible.
+
+==================================================================================
+
+
 This application provides a simple, visual interface for the foursquare service (no formal affiliation).  More specifically, it provides a simple means of checking into arbitrary venues by VID.
 
 A self-contained app bundle is available for download at http://www.columbia.edu/~naz2106/random/cheatsquare
